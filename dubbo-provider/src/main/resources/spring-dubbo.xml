@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://code.alibabatech.com/schema/dubbo
+       http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!--服务名称-->
+    <dubbo:application name="dubbo-provider"/>
+    <!-- 注册中心的ip地址 -->
+    <!-- 将服务提供者的地址暴露出去。这个过程通过zookeeper实现服务注册中心，进行注册暴露 -->
+    <dubbo:registry address="zookeeper://192.168.4.199:2181"/>
+    <!-- 扫描注解包路径，多个包用逗号分隔，不填pacakge表示扫描当前ApplicationContext中所有的类 -->
+    <dubbo:annotation package="com.dubbo.provider.impl"/>
+
+    <!-- 将服务提供者的端口号暴露出去 -->
+    <dubbo:protocol name="dubbo" port="20880"/>
+
+    <!-- service implementation, as same as regular local bean -->
+    <bean id="testService" class="com.dubbo.provider.impl.TestServiceImpl"/>
+    <!-- 将服务提供者需要对外提供的功能暴露出去 -->
+    <dubbo:service interface="com.dubbo.api.service.TestService" ref="testService"/>
+
+</beans>
